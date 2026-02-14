@@ -1,4 +1,4 @@
-aaa# Unicorn Birthday Party
+# Unicorn Birthday Party
 #### A whimsical game about a Unicorn
 
 # Setup
