@@ -16,8 +16,17 @@ Welcome to the magical land of Unicorn Birthday Party, where the code is sparkly
 ---
 
 ## Project Glow-Up Log
-- *2026-02-13*: Full Y2K26 glow-up! Webpack 5, Babel 7, security on fleek, and Copilot in the mix.
-- *2026-02-13*: Added this COPILOT.md so future you remembers how iconic this journey was.
+- *2026-02-13 (Morning)*: Full Y2K26 glow-up! Webpack 5, Babel 7, security on fleek, and Copilot in the mix.
+- *2026-02-13 (Morning)*: Added this COPILOT.md so future you remembers how iconic this journey was.
+- *2026-02-13 (Afternoon)*: **MISSION: Fix Double Jump** 🚀
+  - **The Bug**: Unicorn was triple-jumping (or more!) because the old baby-coder logic was wonky. `downDuration()` was firing on repeat, and the reset logic was chaos.
+  - **The Fix**: 
+    - Replaced `downDuration()` with `justDown` property for single key press detection
+    - Moved reset logic to happen FIRST when landing
+    - Simplified jump counter: increment only when `jumpCount < maxJump`
+    - Result: Perfectly smooth double-jump behavior ✨
+  - **Bonus Chaos**: Also fixed webpack hot reload by removing HtmlWebpackPlugin from dev, fixing publicPath to `/`, and cleaning old production bundles
+  - **Status**: SLAYED ✅
 
 ---
 

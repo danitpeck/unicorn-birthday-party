@@ -37,7 +37,7 @@ class Player extends Phaser.Sprite {
 
     // jump variables
     this.jumpCount = 0;
-    this.maxJump = 1;
+    this.maxJump = 2; // Allow double jump (ground + 1 in air)
 
     // Player controls
     this.jumpKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -88,16 +88,18 @@ class Player extends Phaser.Sprite {
       }
     }
 
-    // makes player jump if on platform or ground
-    if ((this.upKey.downDuration(10) || this.jumpKey.downDuration(10))
-    && this.jumpCount !== this.maxJump ) {
-      this.jumpCount += 1;
-      this.body.velocity.y = -500;
+    // Reset jumpCount when landing
+    if (this.body.onFloor()) {
+      this.jumpCount = 0;
     }
 
-    // resets jumpCount when on ground/platform
-    if (this.body.onFloor && this.hitPlatform) {
-      this.jumpCount = 0;
+    // Only trigger jump on initial key press (not held)
+    if (this.upKey.justDown || this.jumpKey.justDown) {
+      // Allow jump if we haven't exceeded maxJump
+      if (this.jumpCount < this.maxJump) {
+        this.body.velocity.y = -500;
+        this.jumpCount++;
+      }
     }
 
   }

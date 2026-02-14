@@ -1,6 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const TerserPlugin = require('terser-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 // Phaser webpack config
 const phaserModule = path.join(__dirname, '/node_modules/phaser-ce/')
@@ -23,10 +24,18 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'js'),
     publicPath: './js/',
-    filename: '[name].bundle.js'
+    filename: '[name].[contenthash].bundle.js',
+    clean: true
   },
   plugins: [
-    definePlugin,
+    definePlugin,,
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, 'index.html'),
+      inject: 'body',
+      filename: path.resolve(__dirname, 'index.html'),
+      scriptLoading: 'defer',
+      minify: false
+    }),
     new webpack.IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ })
   ],
   optimization: {

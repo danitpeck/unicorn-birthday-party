@@ -1,5 +1,7 @@
+
 const path = require('path')
 const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 // Phaser webpack config
 const phaserModule = path.join(__dirname, '/node_modules/phaser-ce/')
@@ -23,7 +25,7 @@ module.exports = {
   output: {
     pathinfo: true,
     path: path.resolve(__dirname, 'js'),
-    publicPath: './js/',
+    publicPath: '/',
     filename: '[name].bundle.js'
   },
   devServer: {
@@ -32,8 +34,7 @@ module.exports = {
     },
     port: 3000,
     open: true,
-    hot: true,
-    liveReload: true
+    hot: true
   },
   plugins: [
     definePlugin
