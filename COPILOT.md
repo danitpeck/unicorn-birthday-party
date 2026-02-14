@@ -38,6 +38,21 @@ Welcome to the magical land of Unicorn Birthday Party, where the code is sparkly
   - **Star Scaling**: Bumped stars up 2x so they match the unicorn's presence
   - **Result**: Our girl looks GORGEOUS and plays smooth as silk 💅✨
   - **Status**: PERFECTED ✅
+- *2026-02-14*: **MISSION: Phaser 3 Upgrade** 🚀
+  - **Big Shift**: Migrated from Phaser CE to Phaser 3.55.2 (Scenes + Arcade Physics)
+  - **Core Updates**:
+    - Rewrote `main.js`, `Boot`, `Splash`, and `Game` scenes for Phaser 3 APIs
+    - Rebuilt `Player` as a `Phaser.Physics.Arcade.Sprite` with modern input + animation
+    - Fixed double-jump stability and ground detection edge cases
+  - **Map + Collisions**:
+    - Rewired Tiled map loading and collision tiles for Phaser 3
+    - Fixed invisible walls by narrowing collision tiles to walkable surfaces
+    - Added world bounds + fall reset based on map height
+  - **Visual + UI fixes**:
+    - Background now scales to map size
+    - Score text padding fixed (no more clipped digits)
+    - Removed duplicated hashed script tags from `index.html`
+  - **Status**: RUNNING + FEELS GOOD ✅
 
 ---
 
