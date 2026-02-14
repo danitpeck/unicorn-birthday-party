@@ -1,18 +1,27 @@
 import Phaser from 'phaser';
-import { centerGameObjects } from '../utils';
 
-class SplashState extends Phaser.State {
-  init() {}
+class SplashScene extends Phaser.Scene {
+  constructor() {
+    super({ key: 'Splash' });
+  }
 
   preload() {
-    this.loaderBg = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBg');
-    this.loaderBar = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBar');
-    centerGameObjects([this.loaderBg, this.loaderBar]);
+    // Draw progress bar
+    const centerX = this.cameras.main.width / 2;
+    const centerY = this.cameras.main.height / 2;
+    
+    const progressBar = this.add.graphics();
+    const progressBox = this.add.graphics();
+    progressBox.fillStyle(0x222222, 0.8);
+    progressBox.fillRect(centerX - 160, centerY - 30, 320, 60);
 
-    this.load.setPreloadSprite(this.loaderBar);
-    //
-    // load your assets
-    //
+    this.load.on('progress', (value) => {
+      progressBar.clear();
+      progressBar.fillStyle(0xffffff, 1);
+      progressBar.fillRect(centerX - 150, centerY - 20, 300 * value, 40);
+    });
+
+    // Load assets
     this.load.image('sky', 'assets/images/sky.png');
     this.load.image('background', 'assets/images/background2.png');
     this.load.image('ground', 'assets/images/platform.png');
@@ -20,16 +29,15 @@ class SplashState extends Phaser.State {
     this.load.image('star2', 'assets/images/star2.png');
     this.load.image('forest-tiles', 'assets/images/forest-tiles.png');
 
-    this.load.spritesheet('player', 'assets/sprites/unicorn_2.png', 128, 128);
-    this.load.spritesheet('droid', 'assets/images/droid.png', 32, 32);
+    this.load.spritesheet('player', 'assets/sprites/unicorn_2.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('droid', 'assets/images/droid.png', { frameWidth: 32, frameHeight: 32 });
 
-    this.load.tilemap('forest-level', 'assets/tiled/forest-level.json', null, Phaser.Tilemap.TILED_JSON);
+    this.load.tilemapTiledJSON('forest-level', 'assets/tiled/forest-level.json');
   }
 
   create() {
-    this.state.start('Game');
+    this.scene.start('Game');
   }
-
 }
 
-export default SplashState;
+export default SplashScene;
