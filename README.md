@@ -6,7 +6,7 @@ Navigate into your workspace directory.
 
 ### 1. Clone the repo:
 
-```git clone https://github.com/dannytpeck/unicorn-birthday-party.git```
+```git clone https://github.com/danitpeck/unicorn-birthday-party.git```
 
 ### 2. Install the dependencies
 
