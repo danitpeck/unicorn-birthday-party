@@ -23,16 +23,15 @@ class Player extends Phaser.Sprite {
     this.body.collideWorldBounds = true;
     this.body.gravity.y = 1000;
     this.body.maxVelocity.y = 500;
-    this.body.setSize(24, 24, 6, -1);
+    // Adjust body size to match the ~70px tall unicorn in the 128px frame
+    this.body.setSize(60, 70, 34, 20);
 
     // Scale up to 2x
     this.scale.x = 2;
     this.scale.y = 2;
 
-    // Player animations
-    // this.animations.add('left', [0, 1, 2, 3], 10, true);
-    // this.animations.add('turn', [4], 20, true);
-    // this.animations.add('right', [5, 6, 7, 8], 10, true);
+    // Player animations - 4 frame walk cycle
+    this.animations.add('walk', [0, 1, 2, 3], 5, true);
     
 
     // jump variables
@@ -63,7 +62,7 @@ class Player extends Phaser.Sprite {
       this.body.velocity.x = -150;
 
       if (this.facing !== 'left') {
-        // this.animations.play('left');
+        this.animations.play('walk');
         this.facing = 'left';
         this.scale.x = -2;
       }
@@ -71,18 +70,18 @@ class Player extends Phaser.Sprite {
       this.body.velocity.x = 150;
 
       if (this.facing !== 'right') {
-        // this.animations.play('right');
+        this.animations.play('walk');
         this.facing = 'right';
         this.scale.x = 2;
       }
     } else {
       if (this.facing !== 'idle') {
-        // this.animations.stop();
+        this.animations.stop();
 
         if (this.facing === 'left') {
           this.frame = 0;
         } else {
-          this.frame = 5;
+          this.frame = 0;
         }
         this.facing = 'idle';
       }

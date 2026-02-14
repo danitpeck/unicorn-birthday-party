@@ -52,6 +52,10 @@ class GameState extends Phaser.State {
       // Create a star inside of the 'stars' group
       let star = this.stars.create(i * (Math.random() * 5 + 70), Math.random() * 70, 'star');
 
+      // Scale up the star to be bigger
+      star.scale.x = 2;
+      star.scale.y = 2;
+
       // Let gravity do its thing
       star.body.gravity.y = 300;
 

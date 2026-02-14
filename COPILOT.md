@@ -27,6 +27,17 @@ Welcome to the magical land of Unicorn Birthday Party, where the code is sparkly
     - Result: Perfectly smooth double-jump behavior ✨
   - **Bonus Chaos**: Also fixed webpack hot reload by removing HtmlWebpackPlugin from dev, fixing publicPath to `/`, and cleaning old production bundles
   - **Status**: SLAYED ✅
+- *2026-02-13 (Evening)*: **MISSION: Sprite Glow-Up** 🦄
+  - **Added**: Beautiful new animated unicorn sprite (CC-BY-SA 4.0/GPL 3.0 licensed)
+  - **New Features**:
+    - Load sprite as 4-frame walk cycle (128x128 each)
+    - Animated walk cycle at 5fps for that smooth majestic strut
+    - Collision body tuned to 60x70px for natural gap-falling behavior
+    - Frame display properly positioned in 128px frame with Y offset of 20px
+    - Direction flipping already working perfectly with scale.x
+  - **Star Scaling**: Bumped stars up 2x so they match the unicorn's presence
+  - **Result**: Our girl looks GORGEOUS and plays smooth as silk 💅✨
+  - **Status**: PERFECTED ✅
 
 ---
 
