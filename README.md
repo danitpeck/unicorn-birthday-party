@@ -64,3 +64,14 @@ https://github.com/cstuncsik/phaser-es6-demo
 - For future upgrades, see the comments in `webpack.config.js` and `.babelrc` for migration notes.
 
 ---
+
+## Assets & Attribution
+
+This project uses assets created by talented artists in the community. For full attribution details, including licenses and credits, please see [ATTRIBUTION.md](./ATTRIBUTION.md).
+
+**Special thanks to:**
+- **Sparrow666** - Unicorn sprite (modified version)
+- **bluecarrot16** - Original LPC Horses artwork
+- The OpenGameArt.org community for amazing free game assets!
+
+---
