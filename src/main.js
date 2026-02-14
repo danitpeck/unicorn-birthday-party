@@ -1,29 +1,35 @@
 /* globals document, window */
-import 'pixi';
-import 'p2';
 import Phaser from 'phaser';
 
-import BootState from './states/Boot';
-import SplashState from './states/Splash';
-import GameState from './states/Game';
+import BootScene from './states/Boot';
+import SplashScene from './states/Splash';
+import GameScene from './states/Game';
 
 import config from './config';
 
-class Game extends Phaser.Game {
+const docElement = document.documentElement;
+const width = docElement.clientWidth > config.gameWidth ? config.gameWidth : docElement.clientWidth;
+const height = docElement.clientHeight > config.gameHeight ? config.gameHeight : docElement.clientHeight;
 
-  constructor () {
-    const docElement = document.documentElement;
-    const width = docElement.clientWidth > config.gameWidth ? config.gameWidth : docElement.clientWidth;
-    const height = docElement.clientHeight > config.gameHeight ? config.gameHeight : docElement.clientHeight;
+const gameConfig = {
+  type: Phaser.AUTO,
+  width: width,
+  height: height,
+  parent: 'content',
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    width: width,
+    height: height
+  },
+  physics: {
+    default: 'arcade',
+    arcade: {
+      gravity: { y: 0 },
+      debug: false
+    }
+  },
+  scene: [BootScene, SplashScene, GameScene]
+};
 
-    super(width, height, Phaser.AUTO, 'content', null);
-
-    this.state.add('Boot', BootState, false);
-    this.state.add('Splash', SplashState, false);
-    this.state.add('Game', GameState, false);
-
-    this.state.start('Boot');
-  }
-}
-
-window.game = new Game();
+window.game = new Phaser.Game(gameConfig);

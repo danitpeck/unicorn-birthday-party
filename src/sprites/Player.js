@@ -1,107 +1,105 @@
 import Phaser from 'phaser';
 
 /**
- * Class representing the player.
+ * Player sprite class for Phaser 3
  */
-class Player extends Phaser.Sprite {
+export default class Player extends Phaser.Physics.Arcade.Sprite {
+  constructor(scene, x, y, texture) {
+    super(scene, x, y, texture);
 
-  /**
-   * Create a player.
-   * @param {game} game - The game object.
-   * @param {number} x - Initial x value.
-   * @param {number} y - Initial y value.
-   * @param {string} asset - The sprite to use.
-   */
-  constructor(game, x, y, asset) {
-    super(game, x, y, asset);
-    this.anchor.setTo(0.5, 0.5);
+    // Add to scene and enable physics
+    scene.add.existing(this);
+    scene.physics.add.existing(this);
 
-    // We need to enable physics on the player
-    game.physics.arcade.enable(this);
+    // Physics properties
+    this.body.setBounce(0, 0);
+    // Collide with world bounds so left/right edges block movement
+    this.body.setCollideWorldBounds(true);
+    this.body.setGravityY(1000);
+    this.body.setMaxVelocity(500, 500);
+    this.body.setSize(60, 70);
+    this.body.setOffset(34, 20);
 
-    // Player physics properties
-    this.body.collideWorldBounds = true;
-    this.body.gravity.y = 1000;
-    this.body.maxVelocity.y = 500;
-    // Adjust body size to match the ~70px tall unicorn in the 128px frame
-    this.body.setSize(60, 70, 34, 20);
+    // Scale
+    this.setScale(2, 2);
 
-    // Scale up to 2x
-    this.scale.x = 2;
-    this.scale.y = 2;
-
-    // Player animations - 4 frame walk cycle
-    this.animations.add('walk', [0, 1, 2, 3], 5, true);
-    
-
-    // jump variables
+    // Jump variables
     this.jumpCount = 0;
-    this.maxJump = 2; // Allow double jump (ground + 1 in air)
-
-    // Player controls
-    this.jumpKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    this.upKey = game.input.keyboard.addKey(Phaser.Keyboard.W);
-    this.downKey = game.input.keyboard.addKey(Phaser.Keyboard.S);
-    this.leftKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
-    this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.D);
-    this.facing = 'left';
+    this.maxJump = 2;
+    this.isGrounded = false;
+    this.wasGrounded = false;
     this.hitPlatform = false;
 
-    // Saving the variable for use in update()
-    this.game = game;
+    // Direction tracking
+    this.facing = 'idle';
+
+    // Setup input
+    this.setupInput();
+
+    // Create animations
+    this.createAnimations();
   }
 
-  /**
-   * Update (runs every frame)
-   */
+  setupInput() {
+    this.upKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+    this.leftKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+    this.rightKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+    this.jumpKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+  }
+
+  createAnimations() {
+    if (!this.scene.anims.exists('walk')) {
+      this.scene.anims.create({
+        key: 'walk',
+        frames: this.scene.anims.generateFrameNumbers('player', { start: 0, end: 3 }),
+        frameRate: 5,
+        repeat: -1
+      });
+    }
+  }
+
   update() {
-    // Reset the players velocity (movement)
-    this.body.velocity.x = 0;
+    // Check if on floor - use both touching and blocked for reliability
+    this.isGrounded = this.body.touching.down || this.body.blocked.down;
 
+    // Reset jumpCount only when transitioning from air to ground
+    if (this.isGrounded && !this.wasGrounded) {
+      this.jumpCount = 0;
+    }
+    this.wasGrounded = this.isGrounded;
+
+    // Reset velocity x
+    this.body.setVelocityX(0);
+
+    // Handle horizontal movement
     if (this.leftKey.isDown) {
-      this.body.velocity.x = -150;
-
+      this.body.setVelocityX(-150);
       if (this.facing !== 'left') {
-        this.animations.play('walk');
+        this.play('walk');
         this.facing = 'left';
-        this.scale.x = -2;
+        this.setFlipX(true);
       }
     } else if (this.rightKey.isDown) {
-      this.body.velocity.x = 150;
-
+      this.body.setVelocityX(150);
       if (this.facing !== 'right') {
-        this.animations.play('walk');
+        this.play('walk');
         this.facing = 'right';
-        this.scale.x = 2;
+        this.setFlipX(false);
       }
     } else {
       if (this.facing !== 'idle') {
-        this.animations.stop();
-
-        if (this.facing === 'left') {
-          this.frame = 0;
-        } else {
-          this.frame = 0;
-        }
+        this.stop();
+        this.setFrame(0);
         this.facing = 'idle';
       }
     }
 
-    // Reset jumpCount when landing
-    if (this.body.onFloor()) {
-      this.jumpCount = 0;
-    }
-
-    // Only trigger jump on initial key press (not held)
-    if (this.upKey.justDown || this.jumpKey.justDown) {
-      // Allow jump if we haven't exceeded maxJump
+    // Handle jumping
+    if (Phaser.Input.Keyboard.JustDown(this.upKey) || Phaser.Input.Keyboard.JustDown(this.jumpKey)) {
       if (this.jumpCount < this.maxJump) {
-        this.body.velocity.y = -500;
+        this.body.setVelocityY(-500);
         this.jumpCount++;
       }
     }
-
   }
 }
-
-export default Player;
